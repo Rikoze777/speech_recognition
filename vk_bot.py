@@ -1,19 +1,26 @@
+import logging
+import sys
 from random import randint
+from time import sleep
 
+import telegram
 import vk_api as vk
 from environs import Env
+from requests.exceptions import ConnectionError
 from vk_api.longpoll import VkEventType, VkLongPoll
-from modules import detect_intent_texts
+
+from modules import LogsHandler, detect_intent_texts
 
 
 LANGUAGE_CODE = 'ru-RU'
+logger = logging.getLogger(__name__)
 
 
 def reply_message(event, vk_api, project_id):
     session_id = f'vk-{event.user_id}'
     answer = detect_intent_texts(
         project_id, session_id, event.text, LANGUAGE_CODE)
-    if not answer.query_result.intent.is_fallback:
+    if not answer.intent.is_fallback:
         vk_api.messages.send(
             user_id=event.user_id,
             message=answer.fulfillment_text,
@@ -26,13 +33,29 @@ def main():
     env.read_env()
     project_id = env.str('PROJECT_ID')
     vk_token = env.str('VK_TOKEN')
+    tg_token = env.str('TG_TOKEN')
+    user_id = env.str('USER_ID')
+    bot = telegram.Bot(token=tg_token)
+    logging.basicConfig(
+        filename='vk_app.log',
+        filemode='w',
+        level=logging.INFO,
+        format='%(name)s - %(levelname)s - %(asctime)s - %(message)s'
+    )
+    logger.setLevel(logging.INFO)
+    logger.addHandler(logging.StreamHandler(stream=sys.stdout))
+    logger.addHandler(LogsHandler(bot, user_id))
     vk_session = vk.VkApi(token=vk_token)
     vk_api = vk_session.get_api()
     longpoll = VkLongPoll(vk_session)
 
     for event in longpoll.listen():
-        if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-            reply_message(event, vk_api, project_id)
+        try:
+            if event.type == VkEventType.MESSAGE_NEW and event.to_me:
+                reply_message(event, vk_api, project_id)
+        except ConnectionError as error:
+            logger.warning(f'Connection error: {error}\n')
+            sleep(20)
 
 
 if __name__ == '__main__':

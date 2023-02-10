@@ -4,10 +4,8 @@ from environs import Env
 from google.cloud import dialogflow
 
 
-def create_intent(project_id, display_name, training_phrases_parts, message_texts):
-    """Create an intent of the given intent type."""
-    from google.cloud import dialogflow
-
+def create_intent(project_id, display_name, training_phrases_parts,
+                  message_texts):
     intents_client = dialogflow.IntentsClient()
 
     parent = dialogflow.AgentsClient.agent_path(project_id)
@@ -22,7 +20,8 @@ def create_intent(project_id, display_name, training_phrases_parts, message_text
     message = dialogflow.Intent.Message(text=text)
 
     intent = dialogflow.Intent(
-        display_name=display_name, training_phrases=training_phrases, messages=[message]
+        display_name=display_name, training_phrases=training_phrases,
+        messages=[message],
     )
 
     response = intents_client.create_intent(
