@@ -13,11 +13,12 @@ def reply_message(event, vk_api, project_id):
     session_id = f'vk-{event.user_id}'
     answer = detect_intent_texts(
         project_id, session_id, event.text, LANGUAGE_CODE)
-    vk_api.messages.send(
-        user_id=event.user_id,
-        message=answer.fulfillment_text,
-        random_id=randint(1, 100000)
-    )
+    if not answer.query_result.intent.is_fallback:
+        vk_api.messages.send(
+            user_id=event.user_id,
+            message=answer.fulfillment_text,
+            random_id=randint(1, 100000)
+        )
 
 
 def main():
