@@ -2,6 +2,10 @@
 
 Приложение для запуска ботов Telegram и ВК, обученных в DialogFlow отвечать на вопросы.
 
+![tg](https://user-images.githubusercontent.com/61386361/218321093-6deb7475-c5d1-46c4-9fe7-1375615d772f.gif)
+
+![vk](https://user-images.githubusercontent.com/61386361/218321096-a2413f63-ed7a-4e57-899f-be78f2996de8.gif)
+
 
 ## Установка
 
@@ -32,19 +36,19 @@ touch .env
 * [Разрешить API](https://cloud.google.com/dialogflow/es/docs/quick/setup)
 * Созданный .json файл с данными (по умолчанию в /.config/gcloud) переименовать в 'credentials.json'
 
-6) Обучение бота:
+## Обучение бота:
 * Сначала, добавьте необходимые вопросы и ответы как это сделано `questions.json`
 * Запустите следующий скрипт:
 ```
 python3 dialogflow_training.py
 ```
 
-7) Запустить бота
-Telegram бот
+## Запуск бота
+* Telegram бот
 ```
 python3 tg_bot.py
 ```
-или ВК бота
+* ВК бот
 ```
 python3 vk_bot.py
 ```
