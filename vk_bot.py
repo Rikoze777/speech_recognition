@@ -9,7 +9,7 @@ from environs import Env
 from requests.exceptions import ConnectionError
 from vk_api.longpoll import VkEventType, VkLongPoll
 
-from modules import LogsHandler, detect_intent_texts
+from misc_tools import LogsHandler, detect_intent_texts
 
 
 LANGUAGE_CODE = 'ru-RU'
