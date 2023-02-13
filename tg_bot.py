@@ -58,9 +58,8 @@ def main():
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(MessageHandler(Filters.text,
                            partial(reply_to_message, project_id=project_id)))
-    while True:
-        updater.start_polling()
-        updater.idle()
+    updater.start_polling()
+    updater.idle()
 
 
 if __name__ == '__main__':
