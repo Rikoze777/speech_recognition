@@ -1,5 +1,3 @@
-import logging
-
 from google.cloud import dialogflow
 
 
@@ -13,15 +11,3 @@ def detect_intent_texts(project_id, session_id, text, language_code):
         request={"session": session, "query_input": query_input}
     )
     return response.query_result
-
-
-class LogsHandler(logging.Handler):
-
-    def __init__(self, tg_bot, chat_id):
-        super().__init__()
-        self.chat_id = chat_id
-        self.tg_bot = tg_bot
-
-    def emit(self, record):
-        log_entry = self.format(record)
-        self.tg_bot.send_message(chat_id=self.chat_id, text=log_entry)

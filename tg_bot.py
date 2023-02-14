@@ -10,7 +10,8 @@ from telegram.error import NetworkError
 from telegram.ext import (CallbackContext, CommandHandler, Filters,
                           MessageHandler, Updater)
 
-from utils import LogsHandler, detect_intent_texts
+from utils.detect_intent import detect_intent_texts
+from utils.log_handler import LogsHandler
 
 
 LANGUAGE_CODE = 'ru-RU'
